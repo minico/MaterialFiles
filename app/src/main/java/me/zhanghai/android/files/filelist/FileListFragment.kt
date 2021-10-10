@@ -196,17 +196,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         binding.recyclerView.setOnApplyWindowInsetsListener(
             ScrollingViewOnApplyWindowInsetsListener(binding.recyclerView, fastScroller)
         )
-        binding.speedDialView.inflate(R.menu.file_list_speed_dial)
-        binding.speedDialView.setOnActionSelectedListener {
-            when (it.id) {
-                R.id.action_create_file -> showCreateFileDialog()
-                R.id.action_create_directory -> showCreateDirectoryDialog()
-            }
-            // Returning false causes the speed dial to close without animation.
-            //return false;
-            binding.speedDialView.close()
-            true
-        }
 
         if (!viewModel.hasTrail) {
             var path = argsPath
@@ -442,10 +431,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             drawerLayout.closeDrawer(GravityCompat.START)
             return true
         }
-        if (binding.speedDialView.isOpen) {
-            binding.speedDialView.close()
-            return true
-        }
+
         if (overlayActionMode.isActive) {
             overlayActionMode.finish()
             return true
@@ -1284,8 +1270,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val swipeRefreshLayout: SwipeRefreshLayout,
         val recyclerView: RecyclerView,
         val bottomBarLayout: ViewGroup,
-        val bottomToolbar: Toolbar,
-        val speedDialView: SpeedDialView
+        val bottomToolbar: Toolbar
     ) {
         companion object {
             fun inflate(
@@ -1307,8 +1292,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     appBarBinding.breadcrumbLayout, contentBinding.contentLayout,
                     contentBinding.progress, contentBinding.errorText, contentBinding.emptyView,
                     contentBinding.swipeRefreshLayout, contentBinding.recyclerView,
-                    bottomBarBinding.bottomBarLayout, bottomBarBinding.bottomToolbar,
-                    speedDialBinding.speedDialView
+                    bottomBarBinding.bottomBarLayout, bottomBarBinding.bottomToolbar
                 )
             }
         }
