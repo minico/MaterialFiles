@@ -273,12 +273,8 @@ private class BookmarkDirectoryItem(
 }
 
 private val menuItems: List<NavigationItem>
-    @Size(3)
+    @Size(2)
     get() = listOf(
-        ActivityMenuItem(
-            R.drawable.shared_directory_icon_white_24dp, R.string.navigation_ftp_server,
-            FtpServerActivity::class.createIntent()
-        ),
         ActivityMenuItem(
             R.drawable.settings_icon_white_24dp, R.string.navigation_settings,
             SettingsActivity::class.createIntent()
