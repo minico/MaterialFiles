@@ -187,7 +187,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             }
         )
         binding.appBarLayout.syncBackgroundElevationTo(binding.overlayToolbar)
-        binding.breadcrumbLayout.setListener(this)
         binding.swipeRefreshLayout.setOnRefreshListener { this.refresh() }
         binding.recyclerView.layoutManager = GridLayoutManager(activity, /* TODO */ 1)
         adapter = FileListAdapter(this)
@@ -258,9 +257,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         viewModel.searchViewExpandedLiveData.observe(viewLifecycleOwner) {
             onSearchViewExpandedChanged(it)
         }
-        viewModel.breadcrumbLiveData.observe(viewLifecycleOwner) {
-            binding.breadcrumbLayout.setData(it)
-        }
+
         viewModel.sortOptionsLiveData.observe(viewLifecycleOwner) { onSortOptionsChanged(it) }
         viewModel.sortPathSpecificLiveData.observe(viewLifecycleOwner) {
             onSortPathSpecificChanged(it)
@@ -1262,7 +1259,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val appBarLayout: CoordinatorAppBarLayout,
         val toolbar: Toolbar,
         val overlayToolbar: Toolbar,
-        val breadcrumbLayout: BreadcrumbLayout,
         val contentLayout: ViewGroup,
         val progress: ProgressBar,
         val errorText: TextView,
@@ -1289,7 +1285,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     bindingRoot, includeBinding.drawerLayout, includeBinding.persistentDrawerLayout,
                     includeBinding.persistentBarLayout, appBarBinding.appBarLayout,
                     appBarBinding.toolbar, appBarBinding.overlayToolbar,
-                    appBarBinding.breadcrumbLayout, contentBinding.contentLayout,
+                    contentBinding.contentLayout,
                     contentBinding.progress, contentBinding.errorText, contentBinding.emptyView,
                     contentBinding.swipeRefreshLayout, contentBinding.recyclerView,
                     bottomBarBinding.bottomBarLayout, bottomBarBinding.bottomToolbar
