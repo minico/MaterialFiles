@@ -102,16 +102,11 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         )
     }
 
-    override fun closeNavigationDrawer() {
-        listener.closeNavigationDrawer()
-    }
-
     interface Listener {
         val currentPath: Path
         fun navigateTo(path: Path)
         fun navigateToRoot(path: Path)
         fun navigateToDefaultRoot()
         fun observeCurrentPath(owner: LifecycleOwner, observer: (Path) -> Unit)
-        fun closeNavigationDrawer()
     }
 }

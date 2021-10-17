@@ -29,19 +29,13 @@ import me.zhanghai.android.files.util.valueCompat
 val navigationItems: List<NavigationItem?>
     get() =
         mutableListOf<NavigationItem?>().apply {
-            addAll(storageItems)
-            add(AddStorageItem())
-            val standardDirectoryItems = standardDirectoryItems
-            if (standardDirectoryItems.isNotEmpty()) {
-                add(null)
-                addAll(standardDirectoryItems)
-            }
             val bookmarkDirectoryItems = bookmarkDirectoryItems
             if (bookmarkDirectoryItems.isNotEmpty()) {
-                add(null)
                 addAll(bookmarkDirectoryItems)
             }
+            addAll(storageItems)
             add(null)
+            add(AddStorageItem())
             addAll(menuItems)
         }
 
@@ -58,7 +52,6 @@ private abstract class PathItem(val path: Path) : NavigationItem() {
         } else {
             listener.navigateTo(path)
         }
-        listener.closeNavigationDrawer()
     }
 }
 
@@ -303,6 +296,5 @@ private class ActivityMenuItem(
     override fun onClick(listener: Listener) {
         // TODO: startActivitySafe()?
         listener.startActivity(intent)
-        listener.closeNavigationDrawer()
     }
 }

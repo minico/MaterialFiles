@@ -124,13 +124,9 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
     private lateinit var binding: Binding
 
-    private lateinit var navigationFragment: NavigationFragment
-
     private lateinit var menuBinding: MenuBinding
 
     private lateinit var overlayActionMode: ToolbarActionMode
-
-    private lateinit var bottomActionMode: ToolbarActionMode
 
     private lateinit var adapter: FileListAdapter
 
@@ -163,20 +159,9 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (savedInstanceState == null) {
-            navigationFragment = NavigationFragment()
-            childFragmentManager.commit { add(R.id.navigationFragment, navigationFragment) }
-        } else {
-            navigationFragment = childFragmentManager.findFragmentById(R.id.navigationFragment)
-                as NavigationFragment
-        }
-        navigationFragment.listener = this
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(binding.toolbar)
         overlayActionMode = OverlayToolbarActionMode(binding.overlayToolbar)
-        bottomActionMode = PersistentBarLayoutToolbarActionMode(
-            binding.persistentBarLayout, binding.bottomBarLayout, binding.bottomToolbar
-        )
         val contentLayoutInitialPaddingBottom = binding.contentLayout.paddingBottom
         binding.appBarLayout.addOnOffsetChangedListener(
             OnOffsetChangedListener { _, verticalOffset ->
@@ -248,11 +233,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             }
         }
         val viewLifecycleOwner = viewLifecycleOwner
-        if (binding.persistentDrawerLayout != null) {
-            Settings.FILE_LIST_PERSISTENT_DRAWER_OPEN.observe(viewLifecycleOwner) {
-                onPersistentDrawerOpenChanged(it)
-            }
-        }
+
         viewModel.currentPathLiveData.observe(viewLifecycleOwner) { onCurrentPathChanged(it) }
         viewModel.searchViewExpandedLiveData.observe(viewLifecycleOwner) {
             onSearchViewExpandedChanged(it)
@@ -335,15 +316,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                binding.drawerLayout?.openDrawer(GravityCompat.START)
-                if (binding.persistentDrawerLayout != null) {
-                    Settings.FILE_LIST_PERSISTENT_DRAWER_OPEN.putValue(
-                        !Settings.FILE_LIST_PERSISTENT_DRAWER_OPEN.valueCompat
-                    )
-                }
-                true
-            }
             R.id.action_sort_by_name -> {
                 viewModel.setSortBy(By.NAME)
                 true
@@ -423,12 +395,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     fun onBackPressed(): Boolean {
-        val drawerLayout = binding.drawerLayout
-        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-            return true
-        }
-
         if (overlayActionMode.isActive) {
             overlayActionMode.finish()
             return true
@@ -436,19 +402,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         return viewModel.navigateUp(false)
     }
 
-    private fun onPersistentDrawerOpenChanged(open: Boolean) {
-        binding.persistentDrawerLayout?.let {
-            if (open) {
-                it.openDrawer(GravityCompat.START)
-            } else {
-                it.closeDrawer(GravityCompat.START)
-            }
-        }
-    }
-
     private fun onCurrentPathChanged(path: Path) {
         updateOverlayToolbar()
-        updateBottomToolbar()
     }
 
     private fun onSearchViewExpandedChanged(expanded: Boolean) {
@@ -674,7 +629,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         requireActivity().title = title
         updateSelectAllMenuItem()
         updateOverlayToolbar()
-        updateBottomToolbar()
         adapter.pickOptions = pickOptions
     }
 
@@ -861,68 +815,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     private fun onPasteStateChanged(pasteState: PasteState) {
-        updateBottomToolbar()
-    }
-
-    private fun updateBottomToolbar() {
-        val pickOptions = viewModel.pickOptions
-        if (pickOptions != null) {
-            if (!pickOptions.pickDirectory) {
-                if (bottomActionMode.isActive) {
-                    bottomActionMode.finish()
-                }
-                return
-            }
-            bottomActionMode.setNavigationIcon(R.drawable.check_icon_control_normal_24dp)
-            val path = viewModel.currentPath
-            val navigationRoot = NavigationRootMapLiveData.valueCompat[path]
-            val name = navigationRoot?.getName(requireContext()) ?: path.name
-            bottomActionMode.title =
-                getString(R.string.file_list_select_current_directory_format, name)
-        } else {
-            val pasteState = viewModel.pasteState
-            val files = pasteState.files
-            if (files.isEmpty()) {
-                if (bottomActionMode.isActive) {
-                    bottomActionMode.finish()
-                }
-                return
-            }
-            bottomActionMode.setNavigationIcon(R.drawable.close_icon_control_normal_24dp)
-            val isExtract = files.all { it.path.isArchivePath }
-            bottomActionMode.title = getString(
-                if (pasteState.copy) {
-                    if (isExtract) {
-                        R.string.file_list_paste_extract_title_format
-                    } else {
-                        R.string.file_list_paste_copy_title_format
-                    }
-                } else {
-                    R.string.file_list_paste_move_title_format
-                }, files.size
-            )
-            bottomActionMode.setMenuResource(R.menu.file_list_paste)
-            val isReadOnly = viewModel.currentPath.fileSystem.isReadOnly
-            bottomActionMode.menu.findItem(R.id.action_paste)
-                .setTitle(
-                    if (isExtract) R.string.file_list_paste_action_extract_here else R.string.paste
-                )
-                .isEnabled = !isReadOnly
-        }
-        if (!bottomActionMode.isActive) {
-            bottomActionMode.start(object : ToolbarActionMode.Callback {
-                override fun onToolbarActionModeStarted(toolbarActionMode: ToolbarActionMode) {}
-
-                override fun onToolbarActionModeItemClicked(
-                    toolbarActionMode: ToolbarActionMode,
-                    item: MenuItem
-                ): Boolean = onBottomActionModeItemClicked(toolbarActionMode, item)
-
-                override fun onToolbarActionModeFinished(toolbarActionMode: ToolbarActionMode) {
-                    onBottomActionModeFinished(toolbarActionMode)
-                }
-            })
-        }
     }
 
     private fun onBottomActionModeItemClicked(
@@ -1233,10 +1125,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         viewModel.currentPathLiveData.observe(owner, observer)
     }
 
-    override fun closeNavigationDrawer() {
-        binding.drawerLayout?.closeDrawer(GravityCompat.START)
-    }
-
     companion object {
         private const val ACTION_VIEW_DOWNLOADS =
             "me.zhanghai.android.files.intent.action.VIEW_DOWNLOADS"
@@ -1253,9 +1141,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
     private class Binding private constructor(
         val root: View,
-        val drawerLayout: DrawerLayout? = null,
-        val persistentDrawerLayout: PersistentDrawerLayout? = null,
-        val persistentBarLayout: PersistentBarLayout,
         val appBarLayout: CoordinatorAppBarLayout,
         val toolbar: Toolbar,
         val overlayToolbar: Toolbar,
@@ -1265,8 +1150,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val emptyView: View,
         val swipeRefreshLayout: SwipeRefreshLayout,
         val recyclerView: RecyclerView,
-        val bottomBarLayout: ViewGroup,
-        val bottomToolbar: Toolbar
     ) {
         companion object {
             fun inflate(
@@ -1279,16 +1162,13 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 val includeBinding = FileListFragmentIncludeBinding.bind(bindingRoot)
                 val appBarBinding = FileListFragmentAppBarIncludeBinding.bind(bindingRoot)
                 val contentBinding = FileListFragmentContentIncludeBinding.bind(bindingRoot)
-                val bottomBarBinding = FileListFragmentBottomBarIncludeBinding.bind(bindingRoot)
-                val speedDialBinding = FileListFragmentSpeedDialIncludeBinding.bind(bindingRoot)
                 return Binding(
-                    bindingRoot, includeBinding.drawerLayout, includeBinding.persistentDrawerLayout,
-                    includeBinding.persistentBarLayout, appBarBinding.appBarLayout,
+                    bindingRoot,
+                    appBarBinding.appBarLayout,
                     appBarBinding.toolbar, appBarBinding.overlayToolbar,
                     contentBinding.contentLayout,
                     contentBinding.progress, contentBinding.errorText, contentBinding.emptyView,
-                    contentBinding.swipeRefreshLayout, contentBinding.recyclerView,
-                    bottomBarBinding.bottomBarLayout, bottomBarBinding.bottomToolbar
+                    contentBinding.swipeRefreshLayout, contentBinding.recyclerView
                 )
             }
         }

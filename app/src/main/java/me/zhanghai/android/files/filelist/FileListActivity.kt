@@ -12,31 +12,37 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.commit
 import java8.nio.file.Path
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.file.MimeType
+import me.zhanghai.android.files.navigation.NavigationFragment
 import me.zhanghai.android.files.util.createIntent
 import me.zhanghai.android.files.util.extraPath
 import me.zhanghai.android.files.util.putArgs
 
 class FileListActivity : AppActivity() {
-    private lateinit var fragment: FileListFragment
+    private lateinit var fileListFragment: FileListFragment
+    private lateinit var navigationFragment: NavigationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(R.layout.file_list_activity);
         // Calls ensureSubDecor().
-        findViewById<View>(android.R.id.content)
+        //findViewById<View>(android.R.id.content)
         if (savedInstanceState == null) {
-            fragment = FileListFragment().putArgs(FileListFragment.Args(intent))
-            supportFragmentManager.commit { add(android.R.id.content, fragment) }
+            fileListFragment = FileListFragment().putArgs(FileListFragment.Args(intent))
+            navigationFragment = NavigationFragment()
+            navigationFragment.listener = fileListFragment
+            supportFragmentManager.commit { add(R.id.navigation_fragment_container, navigationFragment)
+                add(R.id.file_list_fragment_container, fileListFragment) }
         } else {
-            fragment = supportFragmentManager.findFragmentById(android.R.id.content)
+            fileListFragment = supportFragmentManager.findFragmentById(android.R.id.content)
                 as FileListFragment
         }
     }
 
     override fun onBackPressed() {
-        if (fragment.onBackPressed()) {
+        if (fileListFragment.onBackPressed()) {
             return
         }
         super.onBackPressed()

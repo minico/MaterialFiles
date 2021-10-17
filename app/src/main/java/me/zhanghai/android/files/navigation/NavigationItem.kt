@@ -41,7 +41,6 @@ abstract class NavigationItem {
         fun onAddStorage()
         fun onEditStorage(storage: Storage)
         fun onEditBookmarkDirectory(bookmarkDirectory: BookmarkDirectory)
-        fun closeNavigationDrawer()
         fun startActivity(intent: Intent)
     }
 }
