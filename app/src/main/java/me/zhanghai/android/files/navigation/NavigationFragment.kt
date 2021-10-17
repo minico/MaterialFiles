@@ -69,6 +69,7 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         get() = listener.currentPath
 
     override fun navigateTo(path: Path) {
+        listener.setCurrentBookmarkPath(path)
         listener.navigateTo(path)
     }
 
@@ -104,6 +105,7 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
 
     interface Listener {
         val currentPath: Path
+        fun setCurrentBookmarkPath(path: Path)
         fun navigateTo(path: Path)
         fun navigateToRoot(path: Path)
         fun navigateToDefaultRoot()

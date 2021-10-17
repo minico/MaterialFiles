@@ -110,6 +110,7 @@ import me.zhanghai.android.files.util.viewModels
 import me.zhanghai.android.files.util.withChooser
 import me.zhanghai.android.files.viewer.image.ImageViewerActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
+import java8.nio.file.Files
 import java.util.LinkedHashSet
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
@@ -129,6 +130,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     private lateinit var overlayActionMode: ToolbarActionMode
 
     private lateinit var adapter: FileListAdapter
+
+    private lateinit var currentBookmarkPath: Path
 
     private val debouncedSearchRunnable = DebouncedRunnable(Handler(Looper.getMainLooper()), 1000) {
         if (!isResumed || !viewModel.isSearchViewExpanded) {
@@ -395,6 +398,9 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     fun onBackPressed(): Boolean {
+        if (Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
+            return true;
+        }
         if (overlayActionMode.isActive) {
             overlayActionMode.finish()
             return true
@@ -1115,6 +1121,10 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     override fun navigateToRoot(path: Path) {
         collapseSearchView()
         viewModel.resetTo(path)
+    }
+
+    override fun setCurrentBookmarkPath(path: Path) {
+        currentBookmarkPath = path
     }
 
     override fun navigateToDefaultRoot() {
