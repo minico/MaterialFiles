@@ -37,6 +37,7 @@ val navigationItems: List<NavigationItem?>
             if (Settings.FILE_LIST_ANIMATION.valueCompat) {
                 addAll(storageItems)
                 add(AddStorageItem())
+                add(null)
             }
             addAll(menuItems)
         }
@@ -273,10 +274,6 @@ private val menuItems: List<NavigationItem>
         ActivityMenuItem(
             R.drawable.settings_icon_white_24dp, R.string.navigation_settings,
             SettingsActivity::class.createIntent()
-        ),
-        ActivityMenuItem(
-            R.drawable.about_icon_white_24dp, R.string.navigation_about,
-            AboutActivity::class.createIntent()
         )
     )
 

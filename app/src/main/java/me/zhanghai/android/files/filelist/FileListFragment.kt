@@ -410,7 +410,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         if (shouldExit) return false;
 
         if (this::currentBookmarkPath.isInitialized && Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
-            requireContext().showToast("再按一次返回退出", 1000);
+            requireContext().showToast("再按一次返回键退出", 1000);
             shouldExit = true;
             return true;
         }
