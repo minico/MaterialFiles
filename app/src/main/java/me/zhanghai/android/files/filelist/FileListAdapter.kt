@@ -187,11 +187,7 @@ class FileListAdapter(
             }
         }
         binding.itemLayout.setOnLongClickListener {
-            if (selectedFiles.isEmpty()) {
-                selectFile(file)
-            } else {
-                listener.openFile(file)
-            }
+            listener.addBookmark(file)
             true
         }
         binding.iconLayout.setOnClickListener { selectFile(file) }
