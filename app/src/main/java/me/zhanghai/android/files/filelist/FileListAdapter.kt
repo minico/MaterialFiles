@@ -150,9 +150,6 @@ class FileListAdapter(
         ).apply {
             binding.itemLayout.background =
                 CheckableItemBackground.create(binding.itemLayout.context)
-            popupMenu = PopupMenu(binding.menuButton.context, binding.menuButton)
-                .apply { inflate(R.menu.file_item) }
-            binding.menuButton.setOnClickListener { popupMenu.show() }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -165,8 +162,6 @@ class FileListAdapter(
         val isDirectory = file.attributes.isDirectory
         val enabled = isFileSelectable(file) || isDirectory
         binding.itemLayout.isEnabled = enabled
-        binding.menuButton.isEnabled = enabled
-        val menu = holder.popupMenu.menu
         val path = file.path
         val hasPickOptions = pickOptions != null
         val isReadOnly = path.fileSystem.isReadOnly
@@ -228,24 +223,6 @@ class FileListAdapter(
             val descriptionSeparator = context.getString(R.string.file_item_description_separator)
             listOf(lastModificationTime, size).joinToString(descriptionSeparator)
         }
-        menu.findItem(R.id.action_add_bookmark).isVisible = isDirectory
-        holder.popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_open_with -> {
-                    listener.openFileWith(file)
-                    true
-                }
-                R.id.action_add_bookmark -> {
-                    listener.addBookmark(file)
-                    true
-                }
-                R.id.action_properties -> {
-                    listener.showPropertiesDialog(file)
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     override fun getPopupText(position: Int): String {
@@ -269,7 +246,6 @@ class FileListAdapter(
     }
 
     class ViewHolder(val binding: FileItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        lateinit var popupMenu: PopupMenu
     }
 
     interface Listener {
