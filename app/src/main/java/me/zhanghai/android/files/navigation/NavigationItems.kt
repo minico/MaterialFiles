@@ -33,9 +33,11 @@ val navigationItems: List<NavigationItem?>
             if (bookmarkDirectoryItems.isNotEmpty()) {
                 addAll(bookmarkDirectoryItems)
             }
-            addAll(storageItems)
             add(null)
-            add(AddStorageItem())
+            if (Settings.FILE_LIST_ANIMATION.valueCompat) {
+                addAll(storageItems)
+                add(AddStorageItem())
+            }
             addAll(menuItems)
         }
 
