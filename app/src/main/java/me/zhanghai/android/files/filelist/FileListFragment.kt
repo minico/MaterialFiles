@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -132,6 +133,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     private lateinit var adapter: FileListAdapter
 
     private lateinit var currentBookmarkPath: Path
+
+    private var shouldExit = false;
 
     private val debouncedSearchRunnable = DebouncedRunnable(Handler(Looper.getMainLooper()), 1000) {
         if (!isResumed || !viewModel.isSearchViewExpanded) {
@@ -403,9 +406,16 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     fun onBackPressed(): Boolean {
+        if (shouldExit) return false;
+
         if (this::currentBookmarkPath.isInitialized && Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
+            requireContext().showToast("再按一次返回退出", 1000);
+            shouldExit = true;
             return true;
         }
+
+        shouldExit = false;
+
         if (overlayActionMode.isActive) {
             overlayActionMode.finish()
             return true
@@ -610,6 +620,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     override fun navigateTo(path: Path) {
+        shouldExit = false;
         collapseSearchView()
         val state = binding.recyclerView.layoutManager!!.onSaveInstanceState()
         viewModel.navigateTo(state!!, path)
