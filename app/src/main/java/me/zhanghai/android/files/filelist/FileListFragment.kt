@@ -398,7 +398,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     fun onBackPressed(): Boolean {
-        if (Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
+        if (this::currentBookmarkPath.isInitialized && Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
             return true;
         }
         if (overlayActionMode.isActive) {

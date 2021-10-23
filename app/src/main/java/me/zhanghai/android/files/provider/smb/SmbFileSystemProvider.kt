@@ -269,6 +269,7 @@ object SmbFileSystemProvider : FileSystemProvider(), PathObservableProvider, Sea
             || sharePath.path.isEmpty() || sharePath2.path.isEmpty()) {
             return false
         }
+        return sharePath == sharePath2;
         val pathInformation = try {
             Client.getPathInformation(path, true)
         } catch (e: ClientException) {
