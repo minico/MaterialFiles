@@ -182,7 +182,9 @@ class FileListAdapter(
             }
         }
         binding.itemLayout.setOnLongClickListener {
-            listener.addBookmark(file)
+            if (isDirectory) {
+                listener.addBookmark(file)
+            }
             true
         }
         binding.iconLayout.setOnClickListener { selectFile(file) }
