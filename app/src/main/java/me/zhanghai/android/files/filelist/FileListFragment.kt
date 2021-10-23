@@ -228,7 +228,12 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     }
             }
             if (path == null) {
-                path = Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat
+                val bookmarkDirectories = Settings.BOOKMARK_DIRECTORIES.valueCompat.toMutableList();
+                path = if (bookmarkDirectories.size > 0) {
+                    bookmarkDirectories[0].path;
+                } else {
+                    Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat
+                }
             }
             viewModel.resetTo(path)
             if (pickOptions != null) {
