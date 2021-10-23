@@ -170,8 +170,6 @@ class FileListAdapter(
         val path = file.path
         val hasPickOptions = pickOptions != null
         val isReadOnly = path.fileSystem.isReadOnly
-        menu.findItem(R.id.action_cut).isVisible = !hasPickOptions && !isReadOnly
-        menu.findItem(R.id.action_copy).isVisible = !hasPickOptions
         val checked = file in selectedFiles
         binding.itemLayout.isChecked = checked
         val nameEllipsize = nameEllipsize
@@ -234,12 +232,6 @@ class FileListAdapter(
             val descriptionSeparator = context.getString(R.string.file_item_description_separator)
             listOf(lastModificationTime, size).joinToString(descriptionSeparator)
         }
-        val isArchivePath = path.isArchivePath
-        menu.findItem(R.id.action_copy)
-            .setTitle(if (isArchivePath) R.string.file_item_action_extract else R.string.copy)
-        menu.findItem(R.id.action_delete).isVisible = !isReadOnly
-        menu.findItem(R.id.action_rename).isVisible = !isReadOnly
-        menu.findItem(R.id.action_extract).isVisible = file.isArchiveFile
         menu.findItem(R.id.action_add_bookmark).isVisible = isDirectory
         holder.popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -247,44 +239,8 @@ class FileListAdapter(
                     listener.openFileWith(file)
                     true
                 }
-                R.id.action_cut -> {
-                    listener.cutFile(file)
-                    true
-                }
-                R.id.action_copy -> {
-                    listener.copyFile(file)
-                    true
-                }
-                R.id.action_delete -> {
-                    listener.confirmDeleteFile(file)
-                    true
-                }
-                R.id.action_rename -> {
-                    listener.showRenameFileDialog(file)
-                    true
-                }
-                R.id.action_extract -> {
-                    listener.extractFile(file)
-                    true
-                }
-                R.id.action_archive -> {
-                    listener.showCreateArchiveDialog(file)
-                    true
-                }
-                R.id.action_share -> {
-                    listener.shareFile(file)
-                    true
-                }
-                R.id.action_copy_path -> {
-                    listener.copyPath(file)
-                    true
-                }
                 R.id.action_add_bookmark -> {
                     listener.addBookmark(file)
-                    true
-                }
-                R.id.action_create_shortcut -> {
-                    listener.createShortcut(file)
                     true
                 }
                 R.id.action_properties -> {

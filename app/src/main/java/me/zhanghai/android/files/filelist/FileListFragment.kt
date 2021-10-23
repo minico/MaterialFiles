@@ -362,10 +362,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 viewModel.isSortPathSpecific = !menuBinding.sortPathSpecificItem.isChecked
                 true
             }
-            R.id.action_new_task -> {
-                newTask()
-                true
-            }
             R.id.action_navigate_up -> {
                 navigateUp()
                 true
@@ -374,32 +370,12 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 refresh()
                 true
             }
-            R.id.action_select_all -> {
-                selectAllFiles()
-                true
-            }
             R.id.action_show_hidden_files -> {
                 setShowHiddenFiles(!menuBinding.showHiddenFilesItem.isChecked)
                 true
             }
-            R.id.action_share -> {
-                share()
-                true
-            }
-            R.id.action_copy_path -> {
-                copyPath()
-                true
-            }
-            R.id.action_open_in_terminal -> {
-                openInTerminal()
-                true
-            }
             R.id.action_add_bookmark -> {
                 addBookmark()
-                true
-            }
-            R.id.action_create_shortcut -> {
-                createShortcut()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -659,8 +635,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         if (!this::menuBinding.isInitialized) {
             return
         }
-        val pickOptions = viewModel.pickOptions
-        menuBinding.selectAllItem.isVisible = pickOptions == null || pickOptions.allowMultiple
     }
 
     private fun pickFiles(files: FileItemSet) {
@@ -1212,7 +1186,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val sortOrderAscendingItem: MenuItem,
         val sortDirectoriesFirstItem: MenuItem,
         val sortPathSpecificItem: MenuItem,
-        val selectAllItem: MenuItem,
         val showHiddenFilesItem: MenuItem
     ) {
         companion object {
@@ -1227,7 +1200,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     menu.findItem(R.id.action_sort_order_ascending),
                     menu.findItem(R.id.action_sort_directories_first),
                     menu.findItem(R.id.action_sort_path_specific),
-                    menu.findItem(R.id.action_select_all),
                     menu.findItem(R.id.action_show_hidden_files)
                 )
             }
