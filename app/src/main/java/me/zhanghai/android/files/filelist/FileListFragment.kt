@@ -558,7 +558,11 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     private fun updateAdapterFileList() {
         var files = viewModel.fileListStateful.value ?: return
         if (!Settings.FILE_LIST_SHOW_HIDDEN_FILES.valueCompat) {
-            files = files.filterNot { it.isHidden }
+            files = files.filter { !it.isHidden &&
+                    (it.mimeType.isMedia ||
+                    it.mimeType.isVideo ||
+                    it.mimeType.isImage ||
+                    it.attributes.isDirectory) }
         }
         adapter.replaceListAndIsSearching(files, viewModel.searchState.isSearching)
     }
