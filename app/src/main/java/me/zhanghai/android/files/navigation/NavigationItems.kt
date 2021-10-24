@@ -15,10 +15,9 @@ import androidx.annotation.StringRes
 import java8.nio.file.Path
 import java8.nio.file.Paths
 import me.zhanghai.android.files.R
-import me.zhanghai.android.files.about.AboutActivity
 import me.zhanghai.android.files.file.JavaFile
 import me.zhanghai.android.files.file.asFileSize
-import me.zhanghai.android.files.ftpserver.FtpServerActivity
+import me.zhanghai.android.files.filelist.name
 import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.settings.SettingsActivity
 import me.zhanghai.android.files.storage.FileSystemRoot
@@ -32,8 +31,15 @@ val navigationItems: List<NavigationItem?>
             val bookmarkDirectoryItems = bookmarkDirectoryItems
             if (bookmarkDirectoryItems.isNotEmpty()) {
                 addAll(bookmarkDirectoryItems)
+                add(null)
             }
-            add(null)
+
+            val recentAccessFileItems = recentAcessFileItems
+            if (recentAccessFileItems.isNotEmpty()) {
+                addAll(recentAccessFileItems)
+                add(null)
+            }
+
             if (Settings.FILE_LIST_ANIMATION.valueCompat) {
                 addAll(storageItems)
                 add(AddStorageItem())
@@ -52,6 +58,8 @@ private abstract class PathItem(val path: Path) : NavigationItem() {
     override fun onClick(listener: Listener) {
         if (this is NavigationRoot) {
             listener.navigateToRoot(path)
+        } else if (path.name.contains(".")){
+            listener.openFile(path)
         } else {
             listener.navigateTo(path)
         }
@@ -264,6 +272,35 @@ private class BookmarkDirectoryItem(
 
     override fun onLongClick(listener: Listener): Boolean {
         listener.onEditBookmarkDirectory(bookmarkDirectory)
+        return true
+    }
+}
+
+private val recentAcessFileItems: List<NavigationItem>
+    @Size(min = 0)
+    get() = Settings.RECENT_ACCESS_FILES.valueCompat.map { RecentAccessFileItem(it) }
+
+private class RecentAccessFileItem(
+    private val recentAccessFile: RecentAccessFile
+) : PathItem(recentAccessFile.path) {
+    // We cannot simply use super.getId() because different bookmark directories may have
+    // the same path.
+    override val id: Long
+        get() = recentAccessFile.id
+
+    @DrawableRes
+    override val iconRes: Int = R.drawable.file_video_icon
+
+    override fun getTitle(context: Context): String {
+        val idx = recentAccessFile.name.lastIndexOf(".")
+        if (idx > 0) {
+            return recentAccessFile.name.substring(0, idx)
+        } else {
+            return recentAccessFile.name
+        }
+    }
+
+    override fun onLongClick(listener: Listener): Boolean {
         return true
     }
 }

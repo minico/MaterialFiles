@@ -37,6 +37,7 @@ abstract class NavigationItem {
     interface Listener {
         val currentPath: Path
         fun navigateTo(path: Path)
+        fun openFile(path: Path)
         fun navigateToRoot(path: Path)
         fun onAddStorage()
         fun onEditStorage(storage: Storage)

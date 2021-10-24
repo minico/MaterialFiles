@@ -57,20 +57,10 @@ import me.zhanghai.android.files.databinding.FileListFragmentBottomBarIncludeBin
 import me.zhanghai.android.files.databinding.FileListFragmentContentIncludeBinding
 import me.zhanghai.android.files.databinding.FileListFragmentIncludeBinding
 import me.zhanghai.android.files.databinding.FileListFragmentSpeedDialIncludeBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.asMimeTypeOrNull
-import me.zhanghai.android.files.file.fileProviderUri
-import me.zhanghai.android.files.file.isApk
-import me.zhanghai.android.files.file.isImage
 import me.zhanghai.android.files.filejob.FileJobService
 import me.zhanghai.android.files.filelist.FileSortOptions.By
 import me.zhanghai.android.files.filelist.FileSortOptions.Order
 import me.zhanghai.android.files.fileproperties.FilePropertiesDialogFragment
-import me.zhanghai.android.files.navigation.BookmarkDirectories
-import me.zhanghai.android.files.navigation.BookmarkDirectory
-import me.zhanghai.android.files.navigation.NavigationFragment
-import me.zhanghai.android.files.navigation.NavigationRootMapLiveData
 import me.zhanghai.android.files.provider.archive.createArchiveRootPath
 import me.zhanghai.android.files.provider.archive.isArchivePath
 import me.zhanghai.android.files.provider.linux.isLinuxPath
@@ -112,6 +102,8 @@ import me.zhanghai.android.files.util.withChooser
 import me.zhanghai.android.files.viewer.image.ImageViewerActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
 import java8.nio.file.Files
+import me.zhanghai.android.files.file.*
+import me.zhanghai.android.files.navigation.*
 import java.util.LinkedHashSet
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
@@ -889,6 +881,23 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             return
         }
         openFileWithIntent(file, false)
+        if (file.mimeType.isVideo) {
+            addRecentAccessFile(file.path)
+        }
+    }
+
+    override fun openFile(path: Path) {
+        val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
+        val intent = path.fileProviderUri.createViewIntent(mimeType)
+            .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            .apply {
+                extraPath = path
+                maybeAddImageViewerActivityExtras(this, path, mimeType)
+            }
+            .let {
+                it
+            }
+        startActivitySafe(intent)
     }
 
     private fun openApk(file: FileItem) {
@@ -1045,6 +1054,11 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     private fun addBookmark(path: Path) {
         BookmarkDirectories.add(BookmarkDirectory(null, path))
         showToast(R.string.file_add_bookmark_success)
+    }
+
+    private fun addRecentAccessFile(path: Path) {
+        RecentAccessFiles.add(RecentAccessFile(null, path))
+        //showToast(R.string.file_add_bookmark_success)
     }
 
     override fun createShortcut(file: FileItem) {

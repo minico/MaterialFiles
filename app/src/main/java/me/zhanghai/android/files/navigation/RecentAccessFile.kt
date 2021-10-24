@@ -17,7 +17,7 @@ import java.util.Random
 @Parcelize
 // @see https://youtrack.jetbrains.com/issue/KT-24842
 // @Parcelize throws IllegalAccessError if the primary constructor is private.
-data class BookmarkDirectory internal constructor(
+data class RecentAccessFile internal constructor(
     val id: Long,
     val customName: String?,
     val path: @WriteWith<ParcelableParceler> Path

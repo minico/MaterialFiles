@@ -15,6 +15,7 @@ import me.zhanghai.android.files.compat.EnvironmentCompat2
 import me.zhanghai.android.files.filelist.FileSortOptions
 import me.zhanghai.android.files.filelist.OpenApkDefaultAction
 import me.zhanghai.android.files.navigation.BookmarkDirectory
+import me.zhanghai.android.files.navigation.RecentAccessFile
 import me.zhanghai.android.files.navigation.StandardDirectorySettings
 import me.zhanghai.android.files.provider.root.RootStrategy
 import me.zhanghai.android.files.storage.FileSystemRoot
@@ -143,6 +144,11 @@ object Settings {
                     )
                 )
             )
+        )
+
+    val RECENT_ACCESS_FILES: SettingLiveData<List<RecentAccessFile>> =
+        ParcelValueSettingLiveData(
+            R.string.pref_key_recent_access_files, listOf()
         )
 
     val ROOT_STRATEGY: SettingLiveData<RootStrategy> =

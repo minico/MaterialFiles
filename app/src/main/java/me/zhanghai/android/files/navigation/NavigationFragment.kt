@@ -73,6 +73,10 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         listener.navigateTo(path)
     }
 
+    override fun openFile(path: Path) {
+        listener.openFile(path)
+    }
+
     override fun navigateToRoot(path: Path) {
         listener.navigateToRoot(path)
     }
@@ -107,6 +111,7 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         val currentPath: Path
         fun setCurrentBookmarkPath(path: Path)
         fun navigateTo(path: Path)
+        fun openFile(path: Path)
         fun navigateToRoot(path: Path)
         fun navigateToDefaultRoot()
         fun observeCurrentPath(owner: LifecycleOwner, observer: (Path) -> Unit)
