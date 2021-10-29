@@ -28,7 +28,7 @@
     <style name="ShapeAppearance.MaterialFiles.Navigation" parent="">
         <item name="cornerFamily">rounded</item>
         <!-- Half of ?listPreferredItemHeightSmall -->
-        <item name="cornerSize">24dp</item>
+        <item name="cornerSize">0dp</item>
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>

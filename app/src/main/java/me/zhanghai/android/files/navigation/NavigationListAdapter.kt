@@ -95,7 +95,7 @@ class NavigationListAdapter(
                 context, R.style.ShapeAppearance_MaterialFiles_Navigation, 0
             ).build()
         ).apply { this.fillColor = fillColor }
-        val rightInset = context.dpToDimensionPixelSize(8)
+        val rightInset = context.dpToDimensionPixelSize(0)
         return AutoMirrorDrawable(InsetDrawable(materialShapeDrawable, 0, 0, rightInset, 0))
     }
 
