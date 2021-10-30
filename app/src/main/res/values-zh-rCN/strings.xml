@@ -510,7 +510,7 @@
         <item>基于时间</item>
         <item>基于省电模式</item>
     </string-array>
-    <string name="settings_black_night_mode">黑色夜间模式</string>
+    <string name="settings_black_night_mode">显示文件分割线和详情</string>
     <string name="settings_file_list_animation_title">显示存储</string>
     <string name="settings_file_name_ellipsize_title">显示长文件名</string>
     <string-array name="settings_file_name_ellipsize_entries">

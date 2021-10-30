@@ -144,6 +144,10 @@ class FileListAdapter(
         }
     }
 
+    private fun showGridAndDetails():Boolean {
+        return Settings.BLACK_NIGHT_MODE.valueCompat;
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             FileItemBinding.inflate(parent.context.layoutInflater, parent, false)
@@ -214,8 +218,8 @@ class FileListAdapter(
         if (hasBadge) {
             binding.badgeImage.setImageResource(badgeIconRes!!)
         }
-        binding.nameText.text = file.name
-        binding.descriptionText.text = if (isDirectory) {
+        binding.nameText.text = if (showGridAndDetails()) { file.name } else { file.baseName }
+        binding.descriptionText.text = if (isDirectory || !showGridAndDetails()) {
             null
         } else {
             val context = binding.descriptionText.context
@@ -224,6 +228,11 @@ class FileListAdapter(
             val size = attributes.fileSize.formatHumanReadable(context)
             val descriptionSeparator = context.getString(R.string.file_item_description_separator)
             listOf(lastModificationTime, size).joinToString(descriptionSeparator)
+        }
+        if (showGridAndDetails()) {
+            binding.line.alpha = 1.0f;
+        } else {
+            binding.line.alpha = 0.0f;
         }
     }
 
