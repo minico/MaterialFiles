@@ -188,6 +188,8 @@ class FileListAdapter(
         binding.itemLayout.setOnLongClickListener {
             if (isDirectory) {
                 listener.addBookmark(file)
+            } else {
+                listener.openFileWith(file)
             }
             true
         }

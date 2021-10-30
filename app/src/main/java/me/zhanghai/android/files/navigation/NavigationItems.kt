@@ -59,7 +59,7 @@ private abstract class PathItem(val path: Path) : NavigationItem() {
         if (this is NavigationRoot) {
             listener.navigateToRoot(path)
         } else if (path.name.contains(".")){
-            listener.openFile(path)
+            listener.openFile(path, false)
         } else {
             listener.navigateTo(path)
         }
@@ -301,6 +301,7 @@ private class RecentAccessFileItem(
     }
 
     override fun onLongClick(listener: Listener): Boolean {
+        listener.openFile(path, true)
         return true
     }
 }

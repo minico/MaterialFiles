@@ -890,7 +890,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         }
     }
 
-    override fun openFile(path: Path) {
+    override fun openFile(path: Path, withChooser: Boolean) {
         val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
         val intent = path.fileProviderUri.createViewIntent(mimeType)
             .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -899,7 +899,16 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 maybeAddImageViewerActivityExtras(this, path, mimeType)
             }
             .let {
-                it
+                if (withChooser) {
+                    it.withChooser(
+                        EditFileActivity::class.createIntent()
+                            .putArgs(EditFileActivity.Args(path, mimeType)),
+                        OpenFileAsDialogActivity::class.createIntent()
+                            .putArgs(OpenFileAsDialogFragment.Args(path))
+                    )
+                } else {
+                    it
+                }
             }
         startActivitySafe(intent)
     }
