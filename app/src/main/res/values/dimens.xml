@@ -17,7 +17,7 @@
     <dimen name="content_start_from_screen_edge_margin_minus_24dp">32dp</dimen>
     <dimen name="content_start_from_screen_edge_margin_minus_36dp_considering_at_least_8dp">16dp</dimen>
     <dimen name="content_start_from_screen_edge_margin_minus_40dp">16dp</dimen>
-    <dimen name="content_start_from_screen_edge_margin_minus_44dp">12dp</dimen>
+    <dimen name="content_start_from_screen_edge_margin_minus_44dp">2dp</dimen>
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="dialog_padding_minus_4dp">20dp</dimen>
     <dimen name="dialog_padding_minus_6dp">18dp</dimen>
@@ -31,7 +31,7 @@
     <dimen name="list_vertical_padding">8dp</dimen>
     <dimen name="list_bottom_padding_with_fab">88dp</dimen>
     <dimen name="dense_single_line_list_item_height">40dp</dimen>
-    <dimen name="two_line_list_item_height">50dp</dimen>
+    <dimen name="two_line_list_item_height">40dp</dimen>
     <dimen name="list_item_vertical_padding">5dp</dimen>
     <dimen name="horizontal_divider_height">1dp</dimen>
     <dimen name="small_icon_size">18dp</dimen>
