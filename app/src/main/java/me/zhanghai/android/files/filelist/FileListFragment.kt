@@ -419,7 +419,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             if (hasFiles) {
                 showToast(error)
             } else {
-                binding.errorText.text = error
+                binding.errorText.text = "无法访问指定设备路径"
             }
         }
         binding.emptyView.fadeToVisibilityUnsafe(stateful is Success && !hasFiles)
@@ -728,31 +728,31 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     ): Boolean =
         when (item.itemId) {
             R.id.action_pick -> {
-                pickFiles(viewModel.selectedFiles)
+                //pickFiles(viewModel.selectedFiles)
                 true
             }
             R.id.action_cut -> {
-                cutFiles(viewModel.selectedFiles)
+                //cutFiles(viewModel.selectedFiles)
                 true
             }
             R.id.action_copy -> {
-                copyFiles(viewModel.selectedFiles)
+                //copyFiles(viewModel.selectedFiles)
                 true
             }
             R.id.action_delete -> {
-                confirmDeleteFiles(viewModel.selectedFiles)
+                //confirmDeleteFiles(viewModel.selectedFiles)
                 true
             }
             R.id.action_archive -> {
-                showCreateArchiveDialog(viewModel.selectedFiles)
+                //showCreateArchiveDialog(viewModel.selectedFiles)
                 true
             }
             R.id.action_share -> {
-                shareFiles(viewModel.selectedFiles)
+                //shareFiles(viewModel.selectedFiles)
                 true
             }
             R.id.action_select_all -> {
-                selectAllFiles()
+                //selectAllFiles()
                 true
             }
             else -> false

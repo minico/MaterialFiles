@@ -193,7 +193,7 @@ class FileListAdapter(
             }
             true
         }
-        binding.iconLayout.setOnClickListener { selectFile(file) }
+        //binding.iconLayout.setOnClickListener { selectFile(file) }
         binding.iconImage.setImageResource(file.mimeType.iconRes)
         binding.iconImage.isVisible = true
         binding.thumbnailImage.clear()
