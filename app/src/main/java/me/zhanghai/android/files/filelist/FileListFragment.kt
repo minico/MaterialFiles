@@ -105,6 +105,11 @@ import java8.nio.file.Files
 import me.zhanghai.android.files.file.*
 import me.zhanghai.android.files.navigation.*
 import java.util.LinkedHashSet
+import org.bouncycastle.crypto.params.Blake3Parameters.context
+
+import android.webkit.MimeTypeMap
+import java.io.File
+
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
     OpenApkDialogFragment.Listener, ConfirmDeleteFilesDialogFragment.Listener,
@@ -884,33 +889,11 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             navigateTo(file.listablePath)
             return
         }
-        openFileWithIntent(file, false)
-        if (file.mimeType.isVideo) {
-            addRecentAccessFile(file.path)
-        }
+        openFileWithIntent(file.path, false)
     }
 
     override fun openFile(path: Path, withChooser: Boolean) {
-        val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
-        val intent = path.fileProviderUri.createViewIntent(mimeType)
-            .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            .apply {
-                extraPath = path
-                maybeAddImageViewerActivityExtras(this, path, mimeType)
-            }
-            .let {
-                if (withChooser) {
-                    it.withChooser(
-                        EditFileActivity::class.createIntent()
-                            .putArgs(EditFileActivity.Args(path, mimeType)),
-                        OpenFileAsDialogActivity::class.createIntent()
-                            .putArgs(OpenFileAsDialogFragment.Args(path))
-                    )
-                } else {
-                    it
-                }
-            }
-        startActivitySafe(intent)
+        openFileWithIntent(path, withChooser)
     }
 
     private fun openApk(file: FileItem) {
@@ -945,35 +928,33 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     override fun openFileWith(file: FileItem) {
-        openFileWithIntent(file, true)
+        openFileWithIntent(file.path, true)
     }
 
-    private fun openFileWithIntent(file: FileItem, withChooser: Boolean) {
-        val path = file.path
-        val mimeType = file.mimeType
-        if (path.isArchivePath) {
-            FileJobService.open(path, mimeType, withChooser, requireContext())
+    private fun openFileWithIntent(path: Path, withChooser: Boolean) {
+        val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
+        val intent: Intent
+        if (withChooser) {
+            intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.setDataAndType(path.fileProviderUri, mimeType.type)
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .apply {
+                    extraPath = path }
         } else {
-            val intent = path.fileProviderUri.createViewIntent(mimeType)
+            intent = path.fileProviderUri.createViewIntent(mimeType)
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 .apply {
                     extraPath = path
                     maybeAddImageViewerActivityExtras(this, path, mimeType)
                 }
-                .let {
-                    if (withChooser) {
-                        it.withChooser(
-                            EditFileActivity::class.createIntent()
-                                .putArgs(EditFileActivity.Args(path, mimeType)),
-                            OpenFileAsDialogActivity::class.createIntent()
-                                .putArgs(OpenFileAsDialogFragment.Args(path))
-                        )
-                    } else {
-                        it
-                    }
-                }
-            startActivitySafe(intent)
         }
+
+        if (mimeType.isVideo) {
+            addRecentAccessFile(path)
+        }
+        startActivity(intent)
     }
 
     private fun maybeAddImageViewerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
