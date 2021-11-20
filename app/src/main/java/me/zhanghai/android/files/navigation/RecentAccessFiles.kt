@@ -11,12 +11,18 @@ import me.zhanghai.android.files.util.valueCompat
 
 object RecentAccessFiles {
     fun add(recentAccessFile: RecentAccessFile) {
-        val recentAccessFile = Settings.RECENT_ACCESS_FILES.valueCompat.toMutableList()
-            .apply { add(0, recentAccessFile) }
-        while (recentAccessFile.count() > 3) {
-            recentAccessFile.removeAt(recentAccessFile.count() - 1)
+        val recentAccessFiles = Settings.RECENT_ACCESS_FILES.valueCompat.toMutableList()
+        val res: RecentAccessFile? = recentAccessFiles.find { it.path == recentAccessFile.path }
+        if (res != null) {
+            recentAccessFiles.remove(res)
         }
-        Settings.RECENT_ACCESS_FILES.putValue(recentAccessFile)
+
+        recentAccessFiles.add(0, recentAccessFile)
+
+        while (recentAccessFiles.count() > 3) {
+            recentAccessFiles.removeAt(recentAccessFiles.count() - 1)
+        }
+        Settings.RECENT_ACCESS_FILES.putValue(recentAccessFiles)
     }
 
     fun move(fromPosition: Int, toPosition: Int) {
