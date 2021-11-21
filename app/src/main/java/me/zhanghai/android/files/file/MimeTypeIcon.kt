@@ -65,7 +65,7 @@ private val mimeTypeToIconMap = mapOf(
     "application/x-gtar" to MimeTypeIcon.ARCHIVE,
     "application/x-gtar-compressed" to MimeTypeIcon.ARCHIVE,
     "application/x-gzip" to MimeTypeIcon.ARCHIVE,
-    "application/x-iso9660-image" to MimeTypeIcon.ARCHIVE,
+    "application/x-iso9660-image" to MimeTypeIcon.VIDEO,
     "application/x-java-archive" to MimeTypeIcon.ARCHIVE,
     "application/x-lha" to MimeTypeIcon.ARCHIVE,
     "application/x-lzh" to MimeTypeIcon.ARCHIVE,
