@@ -105,10 +105,6 @@ import java8.nio.file.Files
 import me.zhanghai.android.files.file.*
 import me.zhanghai.android.files.navigation.*
 import java.util.LinkedHashSet
-import org.bouncycastle.crypto.params.Blake3Parameters.context
-
-import android.webkit.MimeTypeMap
-import java.io.File
 
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
@@ -935,13 +931,14 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
         val intent: Intent
         if (withChooser) {
-            intent = Intent()
-            intent.action = Intent.ACTION_VIEW
-            intent.setDataAndType(path.fileProviderUri, mimeType.type)
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            val myIntent = Intent()
+            myIntent.action = Intent.ACTION_VIEW
+            myIntent.data = path.fileProviderUri
+            myIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .apply {
                     extraPath = path }
+            intent = Intent.createChooser(myIntent, "请选择打开方式:")
         } else {
             intent = path.fileProviderUri.createViewIntent(mimeType)
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -954,7 +951,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         if (mimeType.isVideo) {
             addRecentAccessFile(path)
         }
-        startActivity(intent)
+        startActivitySafe(intent)
     }
 
     private fun maybeAddImageViewerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
