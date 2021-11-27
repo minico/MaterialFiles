@@ -7,7 +7,7 @@
 
 <resources>
 
-    <string name="app_name">件浏览器</string>
+    <string name="app_name">文件浏览器</string>
 
     <string name="close">关闭</string>
     <string name="copy">复制</string>
@@ -223,7 +223,7 @@
     <string name="file_create_file_title">新建文件</string>
     <string name="file_create_directory_title">新建文件夹</string>
 
-    <string name="file_list_title">文件</string>
+    <string name="file_list_title">文件浏览器</string>
     <plurals name="file_list_title_pick_file">
         <item quantity="other">选择文件</item>
     </plurals>
