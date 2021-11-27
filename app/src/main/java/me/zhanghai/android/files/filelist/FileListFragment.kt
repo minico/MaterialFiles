@@ -563,6 +563,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     (it.mimeType.isMedia ||
                     it.mimeType.isVideo ||
                     it.mimeType.isImage ||
+                    it.mimeType.isApk ||
                     it.attributes.isDirectory) }
         }
         adapter.replaceListAndIsSearching(files, viewModel.searchState.isSearching)
@@ -936,8 +937,6 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             myIntent.data = path.fileProviderUri
             myIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .apply {
-                    extraPath = path }
             intent = Intent.createChooser(myIntent, "请选择打开方式:")
         } else {
             intent = path.fileProviderUri.createViewIntent(mimeType)
