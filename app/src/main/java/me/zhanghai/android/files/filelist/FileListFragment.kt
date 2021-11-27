@@ -125,7 +125,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
     private lateinit var adapter: FileListAdapter
 
-    private lateinit var currentBookmarkPath: Path
+    private var currentBookmarkPath: Path? = null
 
     private var shouldExit = false;
 
@@ -378,7 +378,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     fun onBackPressed(): Boolean {
         if (shouldExit) return false;
 
-        if (this::currentBookmarkPath.isInitialized && Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
+        if (currentBookmarkPath != null &&
+            Files.isSameFile(currentBookmarkPath, viewModel.currentPath)) {
             requireContext().showToast("再按一次返回键退出", 1000);
             shouldExit = true;
             return true;
@@ -390,7 +391,15 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             overlayActionMode.finish()
             return true
         }
-        return viewModel.navigateUp(false)
+
+        if (!viewModel.navigateUp(false)) {
+            requireContext().showToast("再按一次返回键退出", 1000);
+            shouldExit = true;
+            return true;
+        } else {
+            // do nothing
+        }
+        return true
     }
 
     private fun onCurrentPathChanged(path: Path) {
@@ -932,12 +941,11 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val mimeType = MimeType.guessFromPath(path.toString()).value.asMimeType();
         val intent: Intent
         if (withChooser) {
-            val myIntent = Intent()
-            myIntent.action = Intent.ACTION_VIEW
-            myIntent.data = path.fileProviderUri
-            myIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.setDataAndType(path.fileProviderUri, mimeType.type)
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent = Intent.createChooser(myIntent, "请选择打开方式:")
         } else {
             intent = path.fileProviderUri.createViewIntent(mimeType)
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -1116,14 +1124,16 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     override fun navigateToRoot(path: Path) {
         collapseSearchView()
         viewModel.resetTo(path)
+        shouldExit = false;
     }
 
-    override fun setCurrentBookmarkPath(path: Path) {
+    override fun setCurrentBookmarkPath(path: Path?) {
         currentBookmarkPath = path
     }
 
     override fun navigateToDefaultRoot() {
         navigateToRoot(Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat)
+        shouldExit = false;
     }
 
     override fun observeCurrentPath(owner: LifecycleOwner, observer: (Path) -> Unit) {
