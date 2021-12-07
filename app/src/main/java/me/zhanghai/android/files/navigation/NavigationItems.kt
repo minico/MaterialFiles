@@ -30,21 +30,22 @@ val navigationItems: List<NavigationItem?>
         mutableListOf<NavigationItem?>().apply {
             val bookmarkDirectoryItems = bookmarkDirectoryItems
             if (bookmarkDirectoryItems.isNotEmpty()) {
+                add(DeviderItem("收藏夹"))
                 addAll(bookmarkDirectoryItems)
-                add(null)
             }
 
             val recentAccessFileItems = recentAcessFileItems
             if (recentAccessFileItems.isNotEmpty()) {
+                add(DeviderItem("最近观看"))
                 addAll(recentAccessFileItems)
-                add(null)
             }
 
             if (Settings.FILE_LIST_ANIMATION.valueCompat) {
+                add(DeviderItem("存储设备"))
                 addAll(storageItems)
                 add(AddStorageItem())
-                add(null)
             }
+            add(DeviderItem("设置"))
             addAll(menuItems)
         }
 
@@ -333,5 +334,19 @@ private class ActivityMenuItem(
     override fun onClick(listener: Listener) {
         // TODO: startActivitySafe()?
         listener.startActivity(intent)
+    }
+}
+
+public class DeviderItem (
+    private var text: String
+) : NavigationItem() {
+    override fun getTitle(context: Context): String = text
+    override val id: Long
+        get() = text.hashCode().toLong()
+    override val iconRes: Int?
+        get() = -1
+
+    override fun onClick(listener: Listener) {
+
     }
 }

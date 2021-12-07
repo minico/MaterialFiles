@@ -10,10 +10,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/design_navigation_separator_vertical_padding"
-    android:paddingBottom="@dimen/design_navigation_separator_vertical_padding">
+    android:paddingBottom="0dp">
 
-    <View
+    <TextView
+        android:id="@+id/category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?dividerVertical" />
+        android:paddingLeft="5dp"
+        android:text=""
+        android:textColor="@color/material_blue_grey"
+        android:textSize="18dp" />
 </FrameLayout>

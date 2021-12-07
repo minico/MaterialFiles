@@ -40,7 +40,7 @@ class NavigationListAdapter(
         getItem(position)?.id ?: list.subList(0, position).count { it == null }.toLong()
 
     override fun getItemViewType(position: Int): Int {
-        val viewType = if (getItem(position) != null) ViewType.ITEM else ViewType.DIVIDER
+        val viewType = if (getItem(position) is DeviderItem) ViewType.DIVIDER else ViewType.ITEM
         return viewType.ordinal
     }
 
@@ -122,7 +122,11 @@ class NavigationListAdapter(
                 binding.titleText.text = item.getTitle(binding.titleText.context)
                 binding.subtitleText.text = item.getSubtitle(binding.subtitleText.context)
             }
-            ViewType.DIVIDER -> {}
+            ViewType.DIVIDER -> {
+                val item = getItem(position)!!
+                val binding = (holder as DividerHolder).binding
+                binding.category.text = item.getTitle(binding.category.context)
+            }
         }
     }
 
