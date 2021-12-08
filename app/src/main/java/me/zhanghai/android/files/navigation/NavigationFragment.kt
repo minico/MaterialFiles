@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import java8.nio.file.Path
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.databinding.NavigationFragmentBinding
 import me.zhanghai.android.files.file.DocumentTreeUri
 import me.zhanghai.android.files.file.asDocumentTreeUri
@@ -22,6 +23,7 @@ import me.zhanghai.android.files.provider.document.isDocumentPath
 import me.zhanghai.android.files.storage.AddStorageDialogActivity
 import me.zhanghai.android.files.storage.Storage
 import me.zhanghai.android.files.util.createIntent
+import me.zhanghai.android.files.util.getColorByAttr
 import me.zhanghai.android.files.util.putArgs
 import me.zhanghai.android.files.util.startActivitySafe
 
@@ -51,6 +53,8 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = NavigationListAdapter(this)
         binding.recyclerView.adapter = adapter
+
+        binding.appName.setTextColor(context?.getColorByAttr(R.attr.colorPrimary))
 
         val viewLifecycleOwner = viewLifecycleOwner
         NavigationItemListLiveData.observe(viewLifecycleOwner) { onNavigationItemsChanged(it) }

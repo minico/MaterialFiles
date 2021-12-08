@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     android:divider="?android:attr/dividerHorizontal"
     android:showDividers="middle">
+
+
+
     <FrameLayout
         android:id="@+id/navigation_fragment_container"
         android:layout_weight="1"
