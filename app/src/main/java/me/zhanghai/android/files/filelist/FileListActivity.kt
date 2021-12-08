@@ -32,13 +32,15 @@ class FileListActivity : AppActivity() {
         if (savedInstanceState == null) {
             fileListFragment = FileListFragment().putArgs(FileListFragment.Args(intent))
             navigationFragment = NavigationFragment()
-            navigationFragment.listener = fileListFragment
             supportFragmentManager.commit { add(R.id.navigation_fragment_container, navigationFragment)
                 add(R.id.file_list_fragment_container, fileListFragment) }
         } else {
-            fileListFragment = supportFragmentManager.findFragmentById(android.R.id.content)
+            navigationFragment = supportFragmentManager.findFragmentById(R.id.navigation_fragment_container)
+                    as NavigationFragment
+            fileListFragment = supportFragmentManager.findFragmentById(R.id.file_list_fragment_container)
                 as FileListFragment
         }
+        navigationFragment.listener = fileListFragment
     }
 
     override fun onBackPressed() {

@@ -23,6 +23,7 @@ import me.zhanghai.android.files.databinding.NavigationItemBinding
 import me.zhanghai.android.files.ui.AutoMirrorDrawable
 import me.zhanghai.android.files.ui.SimpleAdapter
 import me.zhanghai.android.files.util.dpToDimensionPixelSize
+import me.zhanghai.android.files.util.getColorByAttr
 import me.zhanghai.android.files.util.getColorStateListByAttr
 import me.zhanghai.android.files.util.layoutInflater
 
@@ -126,6 +127,7 @@ class NavigationListAdapter(
                 val item = getItem(position)!!
                 val binding = (holder as DividerHolder).binding
                 binding.category.text = item.getTitle(binding.category.context)
+                binding.category.setTextColor(binding.category.context.getColorByAttr(R.attr.colorPrimary))
             }
         }
     }
