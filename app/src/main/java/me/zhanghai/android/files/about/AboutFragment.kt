@@ -36,26 +36,6 @@ class AboutFragment : Fragment() {
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        binding.gitHubLayout.setOnClickListener { startActivitySafe(GITHUB_URI.createViewIntent()) }
-        binding.licensesLayout.setOnClickListener { LicensesDialogFragment.show(this) }
-//#ifdef NONFREE
-        binding.privacyPolicyLayout.isVisible = true
-        binding.privacyPolicyLayout.setOnClickListener {
-            startActivitySafe(PRIVACY_POLICY_URI.createViewIntent())
-        }
-//#endif
-        binding.authorNameLayout.setOnClickListener {
-            startActivitySafe(AUTHOR_RESUME_URI.createViewIntent())
-        }
-        binding.authorGitHubLayout.setOnClickListener {
-            startActivitySafe(AUTHOR_GITHUB_URI.createViewIntent())
-        }
-        binding.authorGooglePlusLayout.setOnClickListener {
-            startActivitySafe(AUTHOR_GOOGLE_PLUS_URI.createViewIntent())
-        }
-        binding.authorTwitterLayout.setOnClickListener {
-            startActivitySafe(AUTHOR_TWITTER_URI.createViewIntent())
-        }
     }
 
     companion object {

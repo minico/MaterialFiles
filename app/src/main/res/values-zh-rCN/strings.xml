@@ -555,7 +555,7 @@
     <string name="about_privacy_policy_title">隐私权政策</string>
     <string name="about_author_title">作者</string>
     <string name="about_author_name_title">张海</string>
-    <string name="about_author_github_title">在 GitHub 上关注</string>
+    <string name="about_author_github_title">小技巧：\n - 长按文件夹即可将其加入收藏夹\n - 长按视频文件可弹出播放器选择菜单</string>
     <string name="about_author_google_plus_title">添加到 Google+ 圈子</string>
     <string name="about_author_twitter_title">在 Twitter 上关注</string>
 

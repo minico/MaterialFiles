@@ -15,6 +15,7 @@ import androidx.annotation.StringRes
 import java8.nio.file.Path
 import java8.nio.file.Paths
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.about.AboutActivity
 import me.zhanghai.android.files.file.JavaFile
 import me.zhanghai.android.files.file.asFileSize
 import me.zhanghai.android.files.filelist.name
@@ -43,9 +44,9 @@ val navigationItems: List<NavigationItem?>
             if (Settings.FILE_LIST_ANIMATION.valueCompat) {
                 add(DeviderItem("存储设备"))
                 addAll(storageItems)
-                add(AddStorageItem())
             }
-            add(DeviderItem("设置"))
+            add(DeviderItem("其它"))
+            add(AddStorageItem())
             addAll(menuItems)
         }
 
@@ -313,6 +314,10 @@ private val menuItems: List<NavigationItem>
         ActivityMenuItem(
             R.drawable.settings_icon_white_24dp, R.string.navigation_settings,
             SettingsActivity::class.createIntent()
+        ),
+        ActivityMenuItem(
+            R.drawable.about_icon_white_24dp, R.string.navigation_about,
+            AboutActivity::class.createIntent()
         )
     )
 
