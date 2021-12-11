@@ -21,11 +21,11 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.3.8'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
+        //classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
     }
 }
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.firebase.crashlytics'
 //#endif
 
 android {
@@ -70,11 +70,6 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-//#ifdef NONFREE
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-            }
-//#endif
         }
         debug {
             ndk.abiFilters 'armeabi-v7a','x86'
@@ -82,11 +77,6 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
-    }
-    lintOptions {
-        // For "Invalid package reference in library; not included in Android: javax.security.sasl.
-        // Referenced from org.apache.mina.proxy.ProxyAuthException."
-        warning 'InvalidPackage', 'MissingTranslation'
     }
 }
 
