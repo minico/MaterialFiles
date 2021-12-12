@@ -12,6 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/two_line_list_item_height"
     android:foreground="?selectableItemBackground"
+    android:nextFocusRight="@+id/action_search"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
