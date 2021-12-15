@@ -36,8 +36,8 @@
     <dimen name="horizontal_divider_height">1dp</dimen>
     <dimen name="small_icon_size">18dp</dimen>
     <dimen name="icon_size">24dp</dimen>
-    <dimen name="large_icon_size">24dp</dimen>
-    <dimen name="touch_target_size">24dp</dimen>
+    <dimen name="large_icon_size">32dp</dimen>
+    <dimen name="touch_target_size">32dp</dimen>
     <dimen name="touch_target_icon_padding">5dp</dimen>
     <dimen name="touch_target_large_icon_padding">4dp</dimen>
     <dimen name="badge_size">18dp</dimen>

@@ -36,8 +36,8 @@
 
             <me.zhanghai.android.files.ui.DisabledAlphaImageView
                 android:id="@+id/iconImage"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
+                android:layout_width="@dimen/touch_target_size"
+                android:layout_height="@dimen/touch_target_size"
                 android:layout_gravity="center"
                 android:duplicateParentState="true"
                 android:scaleType="centerCrop" />
@@ -73,6 +73,7 @@
             android:duplicateParentState="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
+            android:textSize="18sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <me.zhanghai.android.files.ui.AutoGoneTextView

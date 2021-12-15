@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/iconImage"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
+        android:layout_width="@dimen/large_icon_size"
+        android:layout_height="@dimen/large_icon_size"
         android:duplicateParentState="true"
         android:scaleType="centerCrop"
         app:tint="?android:textColorSecondary" />
@@ -39,6 +39,7 @@
             android:duplicateParentState="true"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textSize="18sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <me.zhanghai.android.files.ui.AutoGoneTextView
@@ -50,6 +51,6 @@
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:textColorSecondary"
-            android:textSize="10sp" />
+            android:textSize="0sp" />
     </LinearLayout>
 </me.zhanghai.android.files.ui.CheckableForegroundLinearLayout>

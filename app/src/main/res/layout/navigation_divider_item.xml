@@ -19,5 +19,5 @@
         android:paddingLeft="5dp"
         android:text=""
         android:textColor="@color/material_blue_grey"
-        android:textSize="18dp" />
+        android:textSize="20sp" />
 </FrameLayout>
