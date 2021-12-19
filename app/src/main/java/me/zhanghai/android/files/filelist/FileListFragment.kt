@@ -432,7 +432,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             if (hasFiles) {
                 showToast(error)
             } else {
-                binding.errorText.text = "无法访问指定设备路径"
+                binding.errorText.text = "无法访问指定的设备路径"
             }
         }
         binding.emptyView.fadeToVisibilityUnsafe(stateful is Success && !hasFiles)

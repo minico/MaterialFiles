@@ -10,7 +10,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="@dimen/two_line_list_item_height"
     android:paddingStart="@dimen/navigation_item_horizontal_padding"
     android:paddingEnd="@dimen/navigation_item_horizontal_padding"
     android:gravity="center_vertical"

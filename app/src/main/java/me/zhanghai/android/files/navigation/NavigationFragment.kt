@@ -54,8 +54,6 @@ class NavigationFragment : Fragment(), NavigationItem.Listener {
         adapter = NavigationListAdapter(this)
         binding.recyclerView.adapter = adapter
 
-        binding.appName.setTextColor(context?.getColorByAttr(R.attr.colorPrimary))
-
         val viewLifecycleOwner = viewLifecycleOwner
         NavigationItemListLiveData.observe(viewLifecycleOwner) { onNavigationItemsChanged(it) }
         listener.observeCurrentPath(viewLifecycleOwner) { onCurrentPathChanged(it) }
