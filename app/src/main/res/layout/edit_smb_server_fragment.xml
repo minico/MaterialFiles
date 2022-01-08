@@ -72,7 +72,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textUri">
-                            <requestFocus />
                         </com.google.android.material.textfield.TextInputEditText>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,6 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/storage_edit_smb_server_port"
+                        android:visibility="gone"
                         app:errorEnabled="true"
                         app:expandedHintEnabled="false"
                         app:placeholderText="@string/storage_edit_smb_server_port_placeholder">
@@ -96,6 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/storage_edit_smb_server_path"
+                        android:visibility="gone"
                         app:errorEnabled="true"
                         app:expandedHintEnabled="false"
                         app:placeholderText="@string/storage_edit_smb_server_path_placeholder">
@@ -112,6 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/storage_edit_smb_server_name"
+                        android:visibility="gone"
                         app:errorEnabled="true"
                         app:expandedHintEnabled="false"
                         app:placeholderText="@string/storage_edit_smb_server_name_placeholder">
@@ -129,6 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/storage_edit_smb_server_authentication_type"
+                        android:visibility="gone"
                         app:errorEnabled="true"
                         app:expandedHintEnabled="false"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
@@ -157,13 +160,15 @@
                                 android:id="@+id/usernameEdit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:text="admin" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/storage_edit_smb_server_domain"
+                            android:visibility="gone"
                             app:errorEnabled="true">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -186,6 +191,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textPassword" />
+                            <requestFocus />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
